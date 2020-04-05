@@ -78,7 +78,7 @@ def tinyMazeSearch(problem):
 
 def generalSearch(problem, fn):
     dataStructure = {'dfs': util.Stack(), 'bfs': util.Queue()}
-    root = problem.getStartState
+    root = problem.getStartState()
     try:
         visited = set()
         fringe = dataStructure[fn]
@@ -96,7 +96,6 @@ def generalSearch(problem, fn):
         return []
     except Exception as e:
         print(e)
-        return []
 
 
 def depthFirstSearch(problem):
@@ -115,20 +114,18 @@ def depthFirstSearch(problem):
     """
     "*** YOUR CODE HERE ***"
     generalSearch(problem, fn=dfs)
-    util.raiseNotDefined()
 
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
     generalSearch(problem, fn=bfs)
-    util.raiseNotDefined()
 
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    root = problem.getStartState
+    root = problem.getStartState()
     try:
         visited = set()
         fringe = util.PriorityQueue()
@@ -145,8 +142,6 @@ def uniformCostSearch(problem):
         return []
     except Exception as e:
         print(e)
-        return []
-    util.raiseNotDefined()
 
 
 def nullHeuristic(state, problem=None):
@@ -160,8 +155,28 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
-
+    pass
+    root = problem.getStartState()
+    try:
+        visited = set()
+        fringe = util.PriorityQueue()
+        fringe.push((root, [], 0), 0)
+        while not fringe.isEmpty():
+            location, path, cost = fringe.pop()
+            if problem.isGoalState():
+                return path
+            if location not in visited:
+                visited.add(location)
+                for successor, action, stepCost in problem.getSuccessors(location):
+                    if successor not in visited:
+                        backwardCost = stepCost + cost
+                        forwardCost = heuristic(successor, problem)
+                        functionTotalCost = backwardCost + forwardCost
+                        fringe.push((successor, path + [action], backwardCost), functionTotalCost)
+        return []
+    except Exception as e:
+        print(e)
+        
 
 # Abbreviations
 bfs = breadthFirstSearch
